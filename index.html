@@ -11,18 +11,22 @@
         {{ title }}
     </h1>
     <div id="app-2">
-           <stakeholder-item
-                v-for="stakeholder in stakeholderlist"
-                v-bind:stakeholder="stakeholder"
-                v-bind:key="stakeholder.id"/>
-        </ol>
+        <input
+            v-model="newStakeholder"
+            v-on:keyup.enter="addNewStakeholder"
+            placeholder="Add a stakeholder"
+        >
+        <stakeholder-item
+            v-for="stakeholder in stakeholderlist"
+            v-bind:stakeholder="stakeholder"
+            v-bind:key="stakeholder.id"/>
     </div>
 
     <script>
         // Define a new component called stakeholder-item
         Vue.component('stakeholder-item', {
             props: ['stakeholder'],
-            template: '<div class="stakeholderlist">{{ stakeholder.text }}</div>'
+            template: '<div class="stakeholderlist">{{ stakeholder.name }}</div>'
         })
 
         var app = new Vue({
@@ -36,10 +40,20 @@
             el: '#app-2',
             data: {
                 stakeholderlist: [
-                    { id: 0, text: 'Stakeholder 1' },
-                    { id: 1, text: 'Stakeholder 2' },
-                    { id: 2, text: 'Stakeholder 3' }
+                    { id: 0, name: 'Stakeholder 1' },
+                    { id: 1, name: 'Stakeholder 2' },
+                    { id: 2, name: 'Stakeholder 3' }
                 ], 
+                nextStakeholderId: 3
+            },
+            methods: {
+                addNewStakeholder: function () {
+                this.stakeholderlist.push({
+                    id: this.nextStakeholderId++,
+                    name: this.newStakeholder
+                })
+                this.newStakeholder = ''
+                }
             }
         })
     </script>
