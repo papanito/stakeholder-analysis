@@ -3,6 +3,7 @@
 <head>
     <title>Vue Tutorial Samples</title>
     <script src="https://unpkg.com/vue"></script>
+    <link rel="stylesheet" type="text/css" href="main.css">
 </head>
 
 <body>
@@ -10,19 +11,18 @@
         {{ message }}
     </div>
     <div id="app-2">
-        <ol>
-            <!--stakeholder-item
+           <stakeholder-item
                 v-for="stakeholder in stakeholderlist"
-                v-bind:key="stakeholder.id">
-            </stakeholder-item-->
-            <stakeholder-item></stakeholder-item>
+                v-bind:stakeholder="stakeholder"
+                v-bind:key="stakeholder.id"/>
         </ol>
     </div>
 
     <script>
         // Define a new component called stakeholder-item
         Vue.component('stakeholder-item', {
-            template: '<li>Stakholder</li>'
+            props: ['stakeholder'],
+            template: '<div class="stakeholderlist">{{ stakeholder.text }}</div>'
         })
 
         var app = new Vue({
