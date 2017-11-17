@@ -19,8 +19,29 @@
         <input
             v-model="newStakeholderDescription"
             v-on:keyup.enter="addNewStakeholder"
-            placeholder="Add a stakeholder"
+            placeholder="Add a description"
         >
+        <select v-model="newStakeholderPower">
+            <option disabled value="">Please select power</option>
+            <option>very low</option>
+            <option>low</option>
+            <option>low-med</option>
+            <option>med</option>
+            <option>med-high</option>
+            <option>high</option>
+            <option>very high</option>
+        </select>
+        <select v-model="newStakeholderInterest">
+            <option disabled value="">Please select interest</option>
+            <option>very low</option>
+            <option>low</option>
+            <option>low-med</option>
+            <option>med</option>
+            <option>med-high</option>
+            <option>high</option>
+            <option>very high</option>
+        </select>
+
         <button @click="addNewStakeholder">Add</button>
         <stakeholder-item
             v-for="stakeholder in stakeholderlist"
@@ -32,7 +53,7 @@
         // Define a new component called stakeholder-item
         Vue.component('stakeholder-item', {
             props: ['stakeholder'],
-            template: '<div class="stakeholderlist">{{ stakeholder.name }} {{ stakeholder.description }}</div>'
+            template: '<div class="stakeholderlist">{{ stakeholder.name }} {{ stakeholder.description }} {{ stakeholder.power }} {{ stakeholder.interest }}</div>'
         })
 
         var app = new Vue({
@@ -54,10 +75,14 @@
                 this.stakeholderlist.push({
                     id: this.nextStakeholderId++,
                     name: this.newStakeholder,
-                    description: this.newStakeholderDescription
+                    description: this.newStakeholderDescription,
+                    power: this.newStakeholderPower,
+                    interest: this.newStakeholderInterest
                 })
                 this.newStakeholder = ''
                 this.newStakeholderDescription = ''
+                this.newStakeholderPower = ''
+                this.newStakeholderInterest = ''
                 }
             }
         })
