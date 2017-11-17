@@ -2,3 +2,20 @@ div.stakeholderlist {
     background-color: greenyellow;
     padding: 5px;
 }
+
+table {
+    border: 1px black solid;
+}
+td {
+    padding: 5px;
+}
+
+#green {
+    background-color: greenyellow;
+}
+#orange {
+    background-color: orange;
+}
+#red {
+    background-color: red;
+}

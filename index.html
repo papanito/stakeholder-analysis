@@ -41,19 +41,27 @@
             <option>high</option>
             <option>very high</option>
         </select>
+        <select v-model="newStakeholderColor">
+            <option disabled value="">Please select interest</option>
+            <option>green</option>
+            <option>orange</option>
+            <option>red</option>
+        </select>
 
         <button @click="addNewStakeholder">Add</button>
-        <stakeholder-item
+        <table>
+            <stakeholder-item
             v-for="stakeholder in stakeholderlist"
             v-bind:stakeholder="stakeholder"
             v-bind:key="stakeholder.id"/>
+        </table>
     </div>
 
     <script>
         // Define a new component called stakeholder-item
         Vue.component('stakeholder-item', {
             props: ['stakeholder'],
-            template: '<div class="stakeholderlist">{{ stakeholder.name }} {{ stakeholder.description }} {{ stakeholder.power }} {{ stakeholder.interest }}</div>'
+            template: '<tr :id="stakeholder.color"><td>{{ stakeholder.name }}</td></td>{{ stakeholder.description }}</td><td>{{ stakeholder.power }}</td></td>{{ stakeholder.interest }}</td><td>{{ stakeholder.color }}</td></tr>'
         })
 
         var app = new Vue({
@@ -77,12 +85,14 @@
                     name: this.newStakeholder,
                     description: this.newStakeholderDescription,
                     power: this.newStakeholderPower,
-                    interest: this.newStakeholderInterest
+                    interest: this.newStakeholderInterest,
+                    color: this.newStakeholderColor
                 })
                 this.newStakeholder = ''
                 this.newStakeholderDescription = ''
                 this.newStakeholderPower = ''
                 this.newStakeholderInterest = ''
+                this.newStakeholderColor = ''
                 }
             }
         })
