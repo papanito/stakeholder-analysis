@@ -11,13 +11,20 @@
     </div>
     <div id="app-2">
         <ol>
-            <li v-for="stakeholder in stakeholderlist">
-                {{ stakeholder.text }}
-            </li>
+            <!--stakeholder-item
+                v-for="stakeholder in stakeholderlist"
+                v-bind:key="stakeholder.id">
+            </stakeholder-item-->
+            <stakeholder-item></stakeholder-item>
         </ol>
     </div>
 
     <script>
+        // Define a new component called stakeholder-item
+        Vue.component('stakeholder-item', {
+            template: '<li>Stakholder</li>'
+        })
+
         var app = new Vue({
             el: '#app',
             data: {
@@ -35,11 +42,6 @@
                 ], 
             }
         })
-
-        // Define a new component called stakeholder-item
-        /*Vue.component('stakeholder-item', {
-            template: '<li>Stakholder</li>'
-        })*/
     </script>
 </body>
 
