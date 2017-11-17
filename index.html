@@ -7,9 +7,9 @@
 </head>
 
 <body>
-    <div id="app">
-        {{ message }}
-    </div>
+    <h1 id="title">
+        {{ title }}
+    </h1>
     <div id="app-2">
            <stakeholder-item
                 v-for="stakeholder in stakeholderlist"
@@ -26,9 +26,9 @@
         })
 
         var app = new Vue({
-            el: '#app',
+            el: '#title',
             data: {
-                message: 'Hello Vue!'
+                title: 'Welcome to the Stakeholder Analysis App'
             }
         })
 
