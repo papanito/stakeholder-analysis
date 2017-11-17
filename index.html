@@ -16,6 +16,12 @@
             v-on:keyup.enter="addNewStakeholder"
             placeholder="Add a stakeholder"
         >
+        <input
+            v-model="newStakeholderDescription"
+            v-on:keyup.enter="addNewStakeholder"
+            placeholder="Add a stakeholder"
+        >
+        <button @click="addNewStakeholder">Add</button>
         <stakeholder-item
             v-for="stakeholder in stakeholderlist"
             v-bind:stakeholder="stakeholder"
@@ -26,7 +32,7 @@
         // Define a new component called stakeholder-item
         Vue.component('stakeholder-item', {
             props: ['stakeholder'],
-            template: '<div class="stakeholderlist">{{ stakeholder.name }}</div>'
+            template: '<div class="stakeholderlist">{{ stakeholder.name }} {{ stakeholder.description }}</div>'
         })
 
         var app = new Vue({
@@ -40,19 +46,18 @@
             el: '#app-2',
             data: {
                 stakeholderlist: [
-                    { id: 0, name: 'Stakeholder 1' },
-                    { id: 1, name: 'Stakeholder 2' },
-                    { id: 2, name: 'Stakeholder 3' }
                 ], 
-                nextStakeholderId: 3
+                nextStakeholderId: 1 
             },
             methods: {
                 addNewStakeholder: function () {
                 this.stakeholderlist.push({
                     id: this.nextStakeholderId++,
-                    name: this.newStakeholder
+                    name: this.newStakeholder,
+                    description: this.newStakeholderDescription
                 })
                 this.newStakeholder = ''
+                this.newStakeholderDescription = ''
                 }
             }
         })
