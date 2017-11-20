@@ -14,9 +14,9 @@
     <div id="stakeholdergrid">
         <div style="padding: 0px 4px 0px 4px">
             <button @click="addRow">Add row</button>
-            <label for="sessionname">Session Name: </label>
-            <input type="text" name="sessionname" id="sessionname" disabled
-                v-model="sessionname">
+            <label for="datasetname">dataset Name: </label>
+            <input type="text" name="datasetname" id="datasetname" disabled
+                v-model="datasetname">
         </div>
         <table>
             <thead>
@@ -67,8 +67,7 @@
                             <option>very high</option>
                         </select>
                             <span class="tooltiptext" 
-                                v-show="!stakeholder.power" 
-                            >stakeholders power not specified</span>
+                                v-show="!stakeholder.power">stakeholders power not specified</span>
                         </div>
                     </td>
                     <td>
@@ -85,7 +84,8 @@
                             <option>high</option>
                             <option>very high</option>
                         </select>
-                            <span class="tooltiptext" v-show="!stakeholder.interest" >stakeholders interest not specified</span>
+                            <span class="tooltiptext" 
+                                v-show="!stakeholder.interest" >stakeholders interest not specified</span>
                         </div>
                     </td>
                     <td>
@@ -98,7 +98,8 @@
                             <option>orange</option>
                             <option>red</option>
                         </select>
-                            <span class="tooltiptext" v-show="!stakeholder.color" >color not selected</span>
+                            <span class="tooltiptext" 
+                                v-show="!stakeholder.color">color not selected</span>
                         </div>
                     </td>
                     <td>
@@ -110,10 +111,15 @@
 
     </div>
     <script>
-    let myStakeholderlist = JSON.parse(localStorage.getItem('stakeholderlist'))
+    let activedataset = localStorage.getItem('datasets')
+    if (activedataset == null) {
+        activedataset = "noname";
+        console.log("dataset used = "+ activedataset);
+    }
+    let myStakeholderlist = JSON.parse(localStorage.getItem(activedataset))
     if ( myStakeholderlist == null) {
         myStakeholderlist  = new Array();
-    } 
+    }
 
     var app = new Vue({
         el: '#title',
@@ -126,7 +132,7 @@
         el: '#stakeholdergrid',
         data: {
             stakeholderlist: myStakeholderlist,
-            sessionname: "noname"
+            datasetname: activedataset
         },
         methods: {
             addRow: function () {
@@ -146,7 +152,7 @@
                 this.saveData();
             },
             saveData: function () {
-                localStorage.setItem('stakeholderlist', JSON.stringify(this.stakeholderlist))
+                localStorage.setItem(this.datasetname, JSON.stringify(this.stakeholderlist))
             }
         }
     })
