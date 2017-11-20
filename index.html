@@ -14,6 +14,9 @@
     <div id="stakeholdergrid">
         <div style="padding: 0px 4px 0px 4px">
             <button @click="addRow">Add row</button>
+            <label for="sessionname">Session Name: </label>
+            <input type="text" name="sessionname" id="sessionname" disabled
+                v-model="sessionname">
         </div>
         <table>
             <thead>
@@ -123,7 +126,8 @@
     var app2 = new Vue({
         el: '#stakeholdergrid',
         data: {
-            stakeholderlist: myStakeholderlist
+            stakeholderlist: myStakeholderlist,
+            sessionname: "noname"
         },
         methods: {
             addRow: function () {
