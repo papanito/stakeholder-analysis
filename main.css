@@ -3,14 +3,16 @@
     font-size: 1em;
 }
 
+h1 {
+    font-size: 2em;
+    font-weight: bolder;
+}
+
 div.stakeholderlist {
     background-color: greenyellow;
     padding: 5px;
 }
 
-table {
-    border: 1px black solid;
-}
 thead {
     font-weight: bolder;
 }
