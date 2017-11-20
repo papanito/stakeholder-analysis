@@ -10,12 +10,12 @@ td {
     padding: 5px;
 }
 
-#green {
+.green {
     background-color: greenyellow;
 }
-#orange {
+.orange {
     background-color: orange;
 }
-#red {
+.red {
     background-color: red;
 }

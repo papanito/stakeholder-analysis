@@ -19,7 +19,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="stakeholder in stakeholderlist">
+                <tr v-for="stakeholder in stakeholderlist" v-bind:class="stakeholder.color">
                     <td>
                         <input type="text" v-model="stakeholder.name" placeholder="stakeholder name">
                     </td>
@@ -28,7 +28,7 @@
                     </td>
                     <td>
                         <select v-model="stakeholder.power">
-                            <option disabled value="">Please select power</option>
+                            <option disabled value="">power</option>
                             <option>very low</option>
                             <option>low</option>
                             <option>low-med</option>
@@ -40,7 +40,7 @@
                     </td>
                     <td>
                         <select v-model="stakeholder.interest">
-                            <option disabled value="">Please select interest</option>
+                            <option disabled value="">interest</option>
                             <option>very low</option>
                             <option>low</option>
                             <option>low-med</option>
@@ -52,7 +52,7 @@
                     </td>
                     <td>
                         <select v-model="stakeholder.color">
-                            <option disabled value="">Please select color</option>
+                            <option disabled value="">color</option>
                             <option>green</option>
                             <option>orange</option>
                             <option>red</option>
