@@ -1,3 +1,8 @@
+*  {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 1em;
+}
+
 div.stakeholderlist {
     background-color: greenyellow;
     padding: 5px;
@@ -5,6 +10,9 @@ div.stakeholderlist {
 
 table {
     border: 1px black solid;
+}
+thead {
+    font-weight: bolder;
 }
 td {
     padding: 5px;
@@ -36,7 +44,6 @@ td {
     background-color:red;
     color: black;
     font-size: 10px;
-    font-family: Arial, Helvetica, sans-serif;
     text-align: center;
     padding: 4px;
     border-radius: 2px;
