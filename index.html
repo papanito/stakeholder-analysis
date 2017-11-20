@@ -3,6 +3,7 @@
 <head>
     <title>Stakeholder Analysis</title>
     <script src="https://unpkg.com/vue"></script>
+    <!--script src="https://unpkg.com/vue-localstore"></script-->
     <link rel="stylesheet" type="text/css" href="main.css">
 </head>
 
@@ -10,7 +11,7 @@
     <h1 id="title">
         {{ title }}
     </h1>
-    <div id="app-2">
+    <div id="stakeholdergrid">
         <div style="padding: 0px 4px 0px 4px">
             <button @click="addRow">Add row</button>
         </div>
@@ -33,7 +34,8 @@
                             title="Stakeholder name"
                             placeholder="stakeholder name" 
                             class="tooltip"
-                            v-bind:class="{ error: stakeholder.name == '' }"> 
+                            v-bind:class="{ error: stakeholder.name == '' }"
+                            v-on:change="saveData"> 
                             <span class="tooltiptext" v-show="!stakeholder.name" >stakeholder name is missing</span>
                         </div>
                     </td>
@@ -42,13 +44,16 @@
                         <input type="text" 
                             v-model="stakeholder.description" 
                             placeholder="description" 
-                            v-bind:class="{ error: stakeholder.description == '' }">
+                            v-bind:class="{ error: stakeholder.description == '' }"
+                            v-on:change="saveData">
                             <span class="tooltiptext" v-show="!stakeholder.description" >stakeholder description is missing</span>
                         </div>
                     </td>
                     <td>
                         <div class="tooltip">
-                        <select v-model="stakeholder.power" v-bind:class="{ error: stakeholder.power == '' }">
+                        <select v-model="stakeholder.power"
+                            v-bind:class="{ error: stakeholder.power == '' }"
+                            v-on:change="saveData">
                             <option disabled value="">power</option>
                             <option>very low</option>
                             <option>low</option>
@@ -58,12 +63,17 @@
                             <option>high</option>
                             <option>very high</option>
                         </select>
-                            <span class="tooltiptext" v-show="!stakeholder.power" >stakeholders power not specified</span>
+                            <span class="tooltiptext" 
+                                v-show="!stakeholder.power" 
+                                v-on:change="saveData"
+                            >stakeholders power not specified</span>
                         </div>
                     </td>
                     <td>
                         <div class="tooltip">
-                        <select v-model="stakeholder.interest"  v-bind:class="{ error: stakeholder.interest == '' }">
+                        <select v-model="stakeholder.interest"
+                            v-bind:class="{ error: stakeholder.interest == '' }"
+                            v-on.change="saveData">
                             <option disabled value="">interest</option>
                             <option>very low</option>
                             <option>low</option>
@@ -78,7 +88,9 @@
                     </td>
                     <td>
                         <div class="tooltip">
-                        <select v-model="stakeholder.color"  v-bind:class="{ error: stakeholder.color == '' }">
+                        <select v-model="stakeholder.color"
+                            v-bind:class="{ error: stakeholder.color == '' }"
+                            v-on:change="saveData">
                             <option disabled value="">color</option>
                             <option>green</option>
                             <option>orange</option>
@@ -96,6 +108,11 @@
 
     </div>
     <script>
+    let myStakeholderlist = JSON.parse(localStorage.getItem('stakeholderlist'))
+    if ( myStakeholderlist == null) {
+        myStakeholderlist  = new Array();
+    } 
+
     var app = new Vue({
         el: '#title',
         data: {
@@ -104,10 +121,9 @@
     })
 
     var app2 = new Vue({
-        el: '#app-2',
+        el: '#stakeholdergrid',
         data: {
-            stakeholderlist: [{name: "test"}],
-            nextStakeholderId: 1
+            stakeholderlist: myStakeholderlist
         },
         methods: {
             addRow: function () {
@@ -118,11 +134,14 @@
                     power: "",
                     interest: "",
                     color: ""
-                })
+                });
             },
             removeRow: function (stakeholder) {
                 var index = this.stakeholderlist.indexOf(stakeholder)
                 this.stakeholderlist.splice(index, 1);
+            },
+            saveData: function () {
+                localStorage.setItem('stakeholderlist', JSON.stringify(this.stakeholderlist))
             }
         }
     })
