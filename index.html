@@ -11,6 +11,9 @@
         {{ title }}
     </h1>
     <div id="app-2">
+        <div style="padding: 0px 4px 0px 4px">
+            <button @click="addRow">Add row</button>
+        </div>
         <table>
             <thead>
                 <tr>
@@ -91,7 +94,6 @@
             </tbody>
         </table>
 
-        <button @click="addNewStakeholder">Add</button>
     </div>
     <script>
     var app = new Vue({
@@ -108,7 +110,7 @@
             nextStakeholderId: 1
         },
         methods: {
-            addNewStakeholder: function () {
+            addRow: function () {
                 this.stakeholderlist.push({
                     id: "",
                     name: "",
