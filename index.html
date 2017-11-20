@@ -21,12 +21,27 @@
             <tbody>
                 <tr v-for="stakeholder in stakeholderlist" v-bind:class="stakeholder.color">
                     <td>
-                        <input type="text" v-model="stakeholder.name" placeholder="stakeholder name" v-bind:class="{ error: stakeholder.name == '' }">
+                        <div class="tooltip">
+                            <input type="text"
+                            v-model="stakeholder.name" 
+                            title="Stakeholder name"
+                            placeholder="stakeholder name" 
+                            class="tooltip"
+                            v-bind:class="{ error: stakeholder.name == '' }"> 
+                            <span class="tooltiptext" v-show="!stakeholder.name" >stakeholder name is missing</span>
+                        </div>
                     </td>
                     <td>
-                        <input type="text" v-model="stakeholder.description" placeholder="description" v-bind:class="{ error: stakeholder.description == '' }">
+                        <div class="tooltip">
+                        <input type="text" 
+                            v-model="stakeholder.description" 
+                            placeholder="description" 
+                            v-bind:class="{ error: stakeholder.description == '' }">
+                            <span class="tooltiptext" v-show="!stakeholder.description" >stakeholder description is missing</span>
+                        </div>
                     </td>
                     <td>
+                        <div class="tooltip">
                         <select v-model="stakeholder.power" v-bind:class="{ error: stakeholder.power == '' }">
                             <option disabled value="">power</option>
                             <option>very low</option>
@@ -37,8 +52,11 @@
                             <option>high</option>
                             <option>very high</option>
                         </select>
+                            <span class="tooltiptext" v-show="!stakeholder.power" >stakeholders power not specified</span>
+                        </div>
                     </td>
                     <td>
+                        <div class="tooltip">
                         <select v-model="stakeholder.interest"  v-bind:class="{ error: stakeholder.interest == '' }">
                             <option disabled value="">interest</option>
                             <option>very low</option>
@@ -49,14 +67,19 @@
                             <option>high</option>
                             <option>very high</option>
                         </select>
+                            <span class="tooltiptext" v-show="!stakeholder.interest" >stakeholders interest not specified</span>
+                        </div>
                     </td>
                     <td>
+                        <div class="tooltip">
                         <select v-model="stakeholder.color"  v-bind:class="{ error: stakeholder.color == '' }">
                             <option disabled value="">color</option>
                             <option>green</option>
                             <option>orange</option>
                             <option>red</option>
                         </select>
+                            <span class="tooltiptext" v-show="!stakeholder.color" >color not selected</span>
+                        </div>
                     </td>
                     <td>
                     <button @click="removeRow(stakeholder)">Remove</button>
@@ -67,39 +90,38 @@
 
         <button @click="addNewStakeholder">Add</button>
     </div>
-
     <script>
-        var app = new Vue({
-            el: '#title',
-            data: {
-                title: 'Welcome to the Stakeholder Analysis App'
-            }
-        })
+    var app = new Vue({
+        el: '#title',
+        data: {
+            title: 'Welcome to the Stakeholder Analysis App'
+        }
+    })
 
-        var app2 = new Vue({
-            el: '#app-2',
-            data: {
-                stakeholderlist: [],
-                nextStakeholderId: 1
+    var app2 = new Vue({
+        el: '#app-2',
+        data: {
+            stakeholderlist: [{name: "test"}],
+            nextStakeholderId: 1
+        },
+        methods: {
+            addNewStakeholder: function () {
+                this.stakeholderlist.push({
+                    id: "",
+                    name: "",
+                    description: "",
+                    power: "",
+                    interest: "",
+                    color: ""
+                })
             },
-            methods: {
-                addNewStakeholder: function () {
-                    this.stakeholderlist.push({
-                        id: "",
-                        name: "",
-                        description: "",
-                        power: "",
-                        interest: "",
-                        color: ""
-                    })
-                },
-                removeRow: function (stakeholder) {
-                    var index = this.stakeholderlist.indexOf(stakeholder)
-                    this.stakeholderlist.splice(index, 1);
-                }
+            removeRow: function (stakeholder) {
+                var index = this.stakeholderlist.indexOf(stakeholder)
+                this.stakeholderlist.splice(index, 1);
             }
-        })
+        }
+    })
+
     </script>
 </body>
-
 </html>
