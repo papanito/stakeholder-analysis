@@ -1,7 +1,7 @@
 <html>
 
 <head>
-    <title>Vue Tutorial Samples</title>
+    <title>Stakeholder Analysis</title>
     <script src="https://unpkg.com/vue"></script>
     <link rel="stylesheet" type="text/css" href="main.css">
 </head>
@@ -11,59 +11,64 @@
         {{ title }}
     </h1>
     <div id="app-2">
-        <input
-            v-model="newStakeholder"
-            v-on:keyup.enter="addNewStakeholder"
-            placeholder="Add a stakeholder"
-        >
-        <input
-            v-model="newStakeholderDescription"
-            v-on:keyup.enter="addNewStakeholder"
-            placeholder="Add a description"
-        >
-        <select v-model="newStakeholderPower">
-            <option disabled value="">Please select power</option>
-            <option>very low</option>
-            <option>low</option>
-            <option>low-med</option>
-            <option>med</option>
-            <option>med-high</option>
-            <option>high</option>
-            <option>very high</option>
-        </select>
-        <select v-model="newStakeholderInterest">
-            <option disabled value="">Please select interest</option>
-            <option>very low</option>
-            <option>low</option>
-            <option>low-med</option>
-            <option>med</option>
-            <option>med-high</option>
-            <option>high</option>
-            <option>very high</option>
-        </select>
-        <select v-model="newStakeholderColor">
-            <option disabled value="">Please select interest</option>
-            <option>green</option>
-            <option>orange</option>
-            <option>red</option>
-        </select>
+        <table>
+            <thead>
+                <tr>
+                    <td>Name</td>
+                    <td>Description</td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="stakeholder in stakeholderlist">
+                    <td>
+                        <input type="text" v-model="stakeholder.name" placeholder="stakeholder name">
+                    </td>
+                    <td>
+                        <input type="text" v-model="stakeholder.description" placeholder="description">
+                    </td>
+                    <td>
+                        <select v-model="stakeholder.power">
+                            <option disabled value="">Please select power</option>
+                            <option>very low</option>
+                            <option>low</option>
+                            <option>low-med</option>
+                            <option>med</option>
+                            <option>med-high</option>
+                            <option>high</option>
+                            <option>very high</option>
+                        </select>
+                    </td>
+                    <td>
+                        <select v-model="stakeholder.interest">
+                            <option disabled value="">Please select interest</option>
+                            <option>very low</option>
+                            <option>low</option>
+                            <option>low-med</option>
+                            <option>med</option>
+                            <option>med-high</option>
+                            <option>high</option>
+                            <option>very high</option>
+                        </select>
+                    </td>
+                    <td>
+                        <select v-model="stakeholder.color">
+                            <option disabled value="">Please select color</option>
+                            <option>green</option>
+                            <option>orange</option>
+                            <option>red</option>
+                        </select>
+                    </td>
+                    <td>
+                    <button @click="removeRow(stakeholder)">Remove</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
 
         <button @click="addNewStakeholder">Add</button>
-        <table>
-            <stakeholder-item
-            v-for="stakeholder in stakeholderlist"
-            v-bind:stakeholder="stakeholder"
-            v-bind:key="stakeholder.id"/>
-        </table>
     </div>
 
     <script>
-        // Define a new component called stakeholder-item
-        Vue.component('stakeholder-item', {
-            props: ['stakeholder'],
-            template: '<tr :id="stakeholder.color"><td>{{ stakeholder.name }}</td></td>{{ stakeholder.description }}</td><td>{{ stakeholder.power }}</td></td>{{ stakeholder.interest }}</td><td>{{ stakeholder.color }}</td></tr>'
-        })
-
         var app = new Vue({
             el: '#title',
             data: {
@@ -74,25 +79,23 @@
         var app2 = new Vue({
             el: '#app-2',
             data: {
-                stakeholderlist: [
-                ], 
-                nextStakeholderId: 1 
+                stakeholderlist: [],
+                nextStakeholderId: 1
             },
             methods: {
                 addNewStakeholder: function () {
-                this.stakeholderlist.push({
-                    id: this.nextStakeholderId++,
-                    name: this.newStakeholder,
-                    description: this.newStakeholderDescription,
-                    power: this.newStakeholderPower,
-                    interest: this.newStakeholderInterest,
-                    color: this.newStakeholderColor
-                })
-                this.newStakeholder = ''
-                this.newStakeholderDescription = ''
-                this.newStakeholderPower = ''
-                this.newStakeholderInterest = ''
-                this.newStakeholderColor = ''
+                    this.stakeholderlist.push({
+                        id: "",
+                        name: "",
+                        description: "",
+                        power: "",
+                        interest: "",
+                        color: ""
+                    })
+                },
+                removeRow: function (stakeholder) {
+                    var index = this.stakeholderlist.indexOf(stakeholder)
+                    this.stakeholderlist.splice(index, 1);
                 }
             }
         })
