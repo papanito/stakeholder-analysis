@@ -68,7 +68,6 @@
                         </select>
                             <span class="tooltiptext" 
                                 v-show="!stakeholder.power" 
-                                v-on:change="saveData"
                             >stakeholders power not specified</span>
                         </div>
                     </td>
@@ -139,10 +138,12 @@
                     interest: "",
                     color: ""
                 });
+                this.saveData();
             },
             removeRow: function (stakeholder) {
                 var index = this.stakeholderlist.indexOf(stakeholder)
                 this.stakeholderlist.splice(index, 1);
+                this.saveData();
             },
             saveData: function () {
                 localStorage.setItem('stakeholderlist', JSON.stringify(this.stakeholderlist))
