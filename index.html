@@ -21,13 +21,13 @@
             <tbody>
                 <tr v-for="stakeholder in stakeholderlist" v-bind:class="stakeholder.color">
                     <td>
-                        <input type="text" v-model="stakeholder.name" placeholder="stakeholder name">
+                        <input type="text" v-model="stakeholder.name" placeholder="stakeholder name" v-bind:class="{ error: stakeholder.name == '' }">
                     </td>
                     <td>
-                        <input type="text" v-model="stakeholder.description" placeholder="description">
+                        <input type="text" v-model="stakeholder.description" placeholder="description" v-bind:class="{ error: stakeholder.description == '' }">
                     </td>
                     <td>
-                        <select v-model="stakeholder.power">
+                        <select v-model="stakeholder.power" v-bind:class="{ error: stakeholder.power == '' }">
                             <option disabled value="">power</option>
                             <option>very low</option>
                             <option>low</option>
@@ -39,7 +39,7 @@
                         </select>
                     </td>
                     <td>
-                        <select v-model="stakeholder.interest">
+                        <select v-model="stakeholder.interest"  v-bind:class="{ error: stakeholder.interest == '' }">
                             <option disabled value="">interest</option>
                             <option>very low</option>
                             <option>low</option>
@@ -51,7 +51,7 @@
                         </select>
                     </td>
                     <td>
-                        <select v-model="stakeholder.color">
+                        <select v-model="stakeholder.color"  v-bind:class="{ error: stakeholder.color == '' }">
                             <option disabled value="">color</option>
                             <option>green</option>
                             <option>orange</option>

@@ -19,3 +19,8 @@ td {
 .red {
     background-color: red;
 }
+
+.error {
+    color: red;
+    border: 2px red solid;
+}
