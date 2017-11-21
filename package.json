@@ -1,0 +1,28 @@
+{
+  "name": "stakeholder-analysis",
+  "version": "1.0.0",
+  "description": "A webapp which helps to do stakeholder analyzis i.e. graphical representation of power and interest",
+  "main": "index.html",
+  "dependencies": {
+    "karma": "^1.7.1",
+    "vue": "^2.5.4",
+    "vue-localstorage": "^0.5.0"
+  },
+  "devDependencies": {
+    "karma-mocha": "^1.3.0",
+    "mocha": "^4.0.1"
+  },
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/papanito/stakeholder-analysis.git"
+  },
+  "author": "Adrian Wyssmann",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/papanito/stakeholder-analysis/issues"
+  },
+  "homepage": "https://github.com/papanito/stakeholder-analysis#readme"
+}
