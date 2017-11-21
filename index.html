@@ -23,7 +23,9 @@
             <thead>
                 <tr>
                     <td>Name</td>
-                    <td>Description</td>
+                    <td>Department</td>
+                    <td>Role</td>
+                    <td>Comment</td>
                     <td>Power</td>
                     <td>Interest</td>
                     <td>Color</td>
@@ -34,23 +36,42 @@
                     <td>
                         <div class="tooltip">
                             <input type="text"
-                            v-model="stakeholder.name" 
-                            title="Stakeholder name"
-                            placeholder="stakeholder name" 
-                            class="tooltip"
-                            v-bind:class="{ error: stakeholder.name == '' }"
-                            v-on:change="saveData"> 
+                                v-model="stakeholder.name" 
+                                title="Stakeholder name"
+                                placeholder="stakeholder name" 
+                                v-bind:class="{ error: stakeholder.name == '' }"
+                                v-on:change="saveData"> 
                             <span class="tooltiptext" v-show="!stakeholder.name" >stakeholder name is missing</span>
                         </div>
                     </td>
                     <td>
                         <div class="tooltip">
                         <input type="text" 
-                            v-model="stakeholder.description" 
-                            placeholder="description" 
-                            v-bind:class="{ error: stakeholder.description == '' }"
+                            v-model="stakeholder.department" 
+                            placeholder="department" 
+                            v-bind:class="{ error: stakeholder.department == '' }"
                             v-on:change="saveData">
-                            <span class="tooltiptext" v-show="!stakeholder.description" >stakeholder description is missing</span>
+                            <span class="tooltiptext" v-show="!stakeholder.department" >stakeholders department is missing</span>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="tooltip">
+                        <input type="text" 
+                            v-model="stakeholder.role" 
+                            placeholder="role" 
+                            v-bind:class="{ error: stakeholder.role == '' }"
+                            v-on:change="saveData">
+                            <span class="tooltiptext" v-show="!stakeholder.role" >stakeholders role is missing</span>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="tooltip">
+                        <input type="text" 
+                            v-model="stakeholder.comment" 
+                            placeholder="comment" 
+                            v-bind:class="{ error: stakeholder.comment == '' }"
+                            v-on:change="saveData">
+                            <span class="tooltiptext" v-show="!stakeholder.comment" >comment is missing</span>
                         </div>
                     </td>
                     <td>
@@ -147,7 +168,9 @@
                 this.stakeholderlist.push({
                     id: "",
                     name: "",
-                    description: "",
+                    department: "",
+                    role: "",
+                    comment: "",
                     power: "",
                     interest: "",
                     color: ""
