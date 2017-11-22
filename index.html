@@ -130,8 +130,17 @@
                 </tr>
             </tbody>
         </table>
-
+        <div id="graph">
+            <!--svg id="canvas" width="400" height="300" style="border:1px solid #BBB;" >
+                <line x1="0" y1="150" x2="400" y2="150" class="axis" ></line>
+                <line x1="200" y1="0" x2="200" y2="300" class="axis" ></line-->
+                <canvas style="border: 2px solid red"
+                ref="canvas"
+                :height="h"
+                :width="w">
+        </div>
     </div>
+    
     <script>
     let activedataset = localStorage.getItem('datasets')
     if (activedataset == null) {
@@ -152,7 +161,14 @@
 
     var app2 = new Vue({
         el: '#stakeholdergrid',
+        mounted: function () {
+            console.log(this.$refs.canvas)
+            this.context = this.$refs.canvas.getContext('2d')
+        },
         data: {
+            w: 400,
+            h: 300,
+            imgData: null,
             stakeholderlist: myStakeholderlist,
             datasetname: activedataset,
             isDatasetnameDisabled: false
@@ -161,6 +177,9 @@
             datasetname: function(value) {
                 console.log("WATCH datasetname " + value)
                 this.datasetname = "noname"
+            },
+            stakeholderlist: function(value) {
+                console.log("WATCH stakeholder " + value)
             }
         },
         methods: {
@@ -182,8 +201,16 @@
                 this.stakeholderlist.splice(index, 1);
                 this.saveData();
             },
-            saveData: function () {
+            saveData: function (event) {
                 localStorage.setItem(this.datasetname, JSON.stringify(this.stakeholderlist))
+                console.log("saveData " + event)
+                this.drawStakeholders()
+            },
+            drawStakeholders: function () {
+                this.context.fillStyle = "yellowgreen";
+                this.context.fillRect(15, 15, 14, 14);
+                console.log("FUNCT drawStakeholders")
+                console.log(this.context)
             }
         }
     })
