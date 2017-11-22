@@ -22,6 +22,7 @@
         <table>
             <thead>
                 <tr>
+                    <td>id</td>
                     <td>Name</td>
                     <td>Department</td>
                     <td>Role</td>
@@ -32,7 +33,10 @@
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="stakeholder in stakeholderlist" v-bind:class="stakeholder.color">
+                <tr v-for="stakeholder in stakeholderlist" v-bind:class="stakeholder.color" v-on:onload="drawStakeholders">
+                    <td>
+                        <span v-mode="stakeholder.id">{{ stakeholder.id }}</span>
+                    </td>
                     <td>
                         <div class="tooltip">
                             <input type="text"
@@ -80,13 +84,13 @@
                             v-bind:class="{ error: stakeholder.power == '' }"
                             v-on:change="saveData">
                             <option disabled value="">power</option>
-                            <option>very low</option>
-                            <option>low</option>
-                            <option>low-med</option>
-                            <option>med</option>
-                            <option>med-high</option>
-                            <option>high</option>
-                            <option>very high</option>
+                            <option value="0">very low</option>
+                            <option value="1">low</option>
+                            <option value="2">low-med</option>
+                            <option value="3">med</option>
+                            <option value="4">med-high</option>
+                            <option value="5">high</option>
+                            <option value="6">very high</option>
                         </select>
                             <span class="tooltiptext" 
                                 v-show="!stakeholder.power">stakeholders power not specified</span>
@@ -98,13 +102,13 @@
                             v-bind:class="{ error: stakeholder.interest == '' }"
                             v-on.change="saveData">
                             <option disabled value="">interest</option>
-                            <option>very low</option>
-                            <option>low</option>
-                            <option>low-med</option>
-                            <option>med</option>
-                            <option>med-high</option>
-                            <option>high</option>
-                            <option>very high</option>
+                            <option value="0">very low</option>
+                            <option value="1">low</option>
+                            <option value="2">low-med</option>
+                            <option value="3">med</option>
+                            <option value="4">med-high</option>
+                            <option value="5">high</option>
+                            <option value="6">very high</option>
                         </select>
                             <span class="tooltiptext" 
                                 v-show="!stakeholder.interest" >stakeholders interest not specified</span>
@@ -131,13 +135,10 @@
             </tbody>
         </table>
         <div id="graph">
-            <!--svg id="canvas" width="400" height="300" style="border:1px solid #BBB;" >
-                <line x1="0" y1="150" x2="400" y2="150" class="axis" ></line>
-                <line x1="200" y1="0" x2="200" y2="300" class="axis" ></line-->
-                <canvas style="border: 2px solid red"
-                ref="canvas"
-                :height="h"
-                :width="w">
+            <canvas style="border: 2px solid red"
+            ref="canvas"
+            :height="h"
+            :width="w">
         </div>
     </div>
     
@@ -207,14 +208,37 @@
                 this.drawStakeholders()
             },
             drawStakeholders: function () {
-                this.context.fillStyle = "yellowgreen";
-                this.context.fillRect(15, 15, 14, 14);
-                console.log("FUNCT drawStakeholders")
-                console.log(this.context)
+                console.log("drawStakeholders()")
+                //https://github.com/stefanonepa/vue-draw-canvas/
+                //https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/getImageData
+                this.clearCanvas()
+                for (let stakeholder of this.stakeholderlist) {
+                    this.drawPoint(stakeholder)
+                }
+            },
+            drawPoint: function(stakeholder) {
+                let linew = 4;
+                let xsep = this.w/6
+                let ysep = this.h/6
+                try {
+                    x = stakeholder.interest*xsep
+                    y = stakeholder.power*ysep
+                    this.context.beginPath()
+                    console.log("draw stakeholder '" + stakeholder.name + "' at (" + x + "," + y + ") with r=" + linew)
+                    //arc(x, y, radius, startAngle, endAngle, counterClockwise);
+                    this.context.arc(x,y, linew, 0, 2*Math.PI, false)
+                    this.context.fillStyle = stakeholder.color
+                    this.context.fill() 
+                } catch (e) {
+                    console.log("Unable to draw " + stakeholder.name)
+                }
+            },
+            clearCanvas: function() {
+                this.context.clearRect(0, 0, this.w, this.h)
             }
         }
     })
 
     </script>
 </body>
-</html>
+    </html>
