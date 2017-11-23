@@ -45,7 +45,7 @@
                                 placeholder="stakeholder name" 
                                 v-bind:class="{ error: stakeholder.name == '' }"
                                 v-on:change="saveData"> 
-                            <span class="tooltiptext" v-show="!stakeholder.name" >stakeholder name is missing</span>
+                            <span class="tooltiptexterr" v-show="!stakeholder.name" >stakeholder name is missing</span>
                         </div>
                     </td>
                     <td>
@@ -53,9 +53,8 @@
                         <input type="text" 
                             v-model="stakeholder.department" 
                             placeholder="department" 
-                            v-bind:class="{ error: stakeholder.department == '' }"
                             v-on:change="saveData">
-                            <span class="tooltiptext" v-show="!stakeholder.department" >stakeholders department is missing</span>
+                            <span class="tooltiptext" v-show="!stakeholder.department" >provide department</span>
                         </div>
                     </td>
                     <td>
@@ -63,9 +62,8 @@
                         <input type="text" 
                             v-model="stakeholder.role" 
                             placeholder="role" 
-                            v-bind:class="{ error: stakeholder.role == '' }"
                             v-on:change="saveData">
-                            <span class="tooltiptext" v-show="!stakeholder.role" >stakeholders role is missing</span>
+                            <span class="tooltiptext" v-show="!stakeholder.role" >provide role </span>
                         </div>
                     </td>
                     <td>
@@ -73,9 +71,8 @@
                         <input type="text" 
                             v-model="stakeholder.comment" 
                             placeholder="comment" 
-                            v-bind:class="{ error: stakeholder.comment == '' }"
                             v-on:change="saveData">
-                            <span class="tooltiptext" v-show="!stakeholder.comment" >comment is missing</span>
+                            <span class="tooltiptext" v-show="!stakeholder.comment" >proivde comment</span>
                         </div>
                     </td>
                     <td>
@@ -92,7 +89,7 @@
                             <option value="5">high</option>
                             <option value="6">very high</option>
                         </select>
-                            <span class="tooltiptext" 
+                            <span class="tooltiptexterr" 
                                 v-show="!stakeholder.power">stakeholders power not specified</span>
                         </div>
                     </td>
@@ -110,7 +107,7 @@
                             <option value="5">high</option>
                             <option value="6">very high</option>
                         </select>
-                            <span class="tooltiptext" 
+                            <span class="tooltiptexterr" 
                                 v-show="!stakeholder.interest" >stakeholders interest not specified</span>
                         </div>
                     </td>
@@ -135,7 +132,7 @@
             </tbody>
         </table>
         <div id="graph">
-            <canvas style="border: 2px solid red"
+            <canvas class="stakeholdergraph"
             ref="canvas"
             :height="h"
             :width="w">
@@ -165,6 +162,9 @@
         mounted: function () {
             console.log(this.$refs.canvas)
             this.context = this.$refs.canvas.getContext('2d')
+
+            //draw diagram when page loaded
+            this.drawStakeholders()
         },
         data: {
             w: 400,
@@ -225,7 +225,7 @@
                     y = stakeholder.power*ysep
                     this.context.beginPath()
                     console.log("draw stakeholder '" + stakeholder.name + "' at (" + x + "," + y + ") with r=" + linew)
-                    //arc(x, y, radius, startAngle, endAngle, counterClockwise);
+                    //Syntax: arc(x, y, radius, startAngle, endAngle, counterClockwise);
                     this.context.arc(x,y, linew, 0, 2*Math.PI, false)
                     this.context.fillStyle = stakeholder.color
                     this.context.fill() 
@@ -235,6 +235,10 @@
             },
             clearCanvas: function() {
                 this.context.clearRect(0, 0, this.w, this.h)
+            },
+            drawCoordinates: function() {
+                this.context.beginPath()
+                this.context.
             }
         }
     })
