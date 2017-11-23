@@ -3,6 +3,7 @@
 <head>
     <title>Stakeholder Analysis</title>
     <script src="https://unpkg.com/vue"></script>
+    <script src="https://unpkg.com/raphael"></script>
     <!--script src="https://unpkg.com/vue-localstore"></script-->
     <link rel="stylesheet" type="text/css" href="main.css">
 </head>
@@ -131,12 +132,7 @@
                 </tr>
             </tbody>
         </table>
-        <div id="graph">
-            <canvas class="stakeholdergraph"
-            ref="canvas"
-            :height="h"
-            :width="w">
-        </div>
+        <div class="stakeholdergraph" ref="canvas"></div>
     </div>
     
     <script>
@@ -160,9 +156,10 @@
     var app2 = new Vue({
         el: '#stakeholdergrid',
         mounted: function () {
-            console.log(this.$refs.canvas)
-            this.context = this.$refs.canvas.getContext('2d')
-
+            //console.log(this.$refs.canvas)
+            //this.context = this.$refs.canvas.getContext('2d')
+            this.paper = new Raphael(this.$refs.canvas, this.w, this.h)
+console.log(this.paper)
             //draw diagram when page loaded
             this.drawStakeholders()
         },
@@ -209,36 +206,32 @@
             },
             drawStakeholders: function () {
                 console.log("drawStakeholders()")
+                //var circle = this.paper.circle(100, 100, 80);
+                //var rectangle = this.paper.rect(200, 200, 250, 50);
                 //https://github.com/stefanonepa/vue-draw-canvas/
                 //https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/getImageData
-                this.clearCanvas()
+                /*this.clearCanvas()*/
                 for (let stakeholder of this.stakeholderlist) {
                     this.drawPoint(stakeholder)
                 }
             },
             drawPoint: function(stakeholder) {
-                let linew = 4;
+                let radius = 3
                 let xsep = this.w/6
                 let ysep = this.h/6
+                console.log("try to draw stakeholder '" + stakeholder.name )
                 try {
                     x = stakeholder.interest*xsep
                     y = stakeholder.power*ysep
-                    this.context.beginPath()
-                    console.log("draw stakeholder '" + stakeholder.name + "' at (" + x + "," + y + ") with r=" + linew)
-                    //Syntax: arc(x, y, radius, startAngle, endAngle, counterClockwise);
-                    this.context.arc(x,y, linew, 0, 2*Math.PI, false)
-                    this.context.fillStyle = stakeholder.color
-                    this.context.fill() 
+                    console.log("draw stakeholder '" + stakeholder.name + "' at (" + x + "," + y + ") with r=" + radius)
+                    var circle = this.paper.circle(x,y,radius)
+                    circle.attr({fill: stakeholder.color });
                 } catch (e) {
                     console.log("Unable to draw " + stakeholder.name)
                 }
             },
             clearCanvas: function() {
                 this.context.clearRect(0, 0, this.w, this.h)
-            },
-            drawCoordinates: function() {
-                this.context.beginPath()
-                this.context.
             }
         }
     })
