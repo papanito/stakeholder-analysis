@@ -36,7 +36,7 @@
             <tbody>
                 <tr v-for="stakeholder in stakeholderlist" v-bind:class="stakeholder.color" v-on:onload="drawStakeholders">
                     <td>
-                        <span v-mode="stakeholder.id">{{ stakeholder.id }}</span>
+                        <span v-model="stakeholder.index">{{ stakeholder.index }}</span>
                     </td>
                     <td>
                         <div class="tooltip">
@@ -82,13 +82,13 @@
                             v-bind:class="{ error: stakeholder.power == '' }"
                             v-on:change="saveData">
                             <option disabled value="">power</option>
-                            <option value="0">very low</option>
-                            <option value="1">low</option>
-                            <option value="2">low-med</option>
+                            <option value="6">very low</option>
+                            <option value="5">low</option>
+                            <option value="4">low-med</option>
                             <option value="3">med</option>
-                            <option value="4">med-high</option>
-                            <option value="5">high</option>
-                            <option value="6">very high</option>
+                            <option value="2">med-high</option>
+                            <option value="1">high</option>
+                            <option value="0">very high</option>
                         </select>
                             <span class="tooltiptexterr" 
                                 v-show="!stakeholder.power">stakeholders power not specified</span>
@@ -98,7 +98,7 @@
                         <div class="tooltip">
                         <select v-model="stakeholder.interest"
                             v-bind:class="{ error: stakeholder.interest == '' }"
-                            v-on.change="saveData">
+                            v-on:change="saveData">
                             <option disabled value="">interest</option>
                             <option value="0">very low</option>
                             <option value="1">low</option>
@@ -141,10 +141,12 @@
         activedataset = "noname";
         console.log("dataset used = "+ activedataset);
     }
-    let myStakeholderlist = JSON.parse(localStorage.getItem(activedataset))
-    if ( myStakeholderlist == null) {
+    try {
+        myStakeholderlist = JSON.parse(localStorage.getItem(activedataset))
+    } catch (e) {
         myStakeholderlist  = new Array();
     }
+    nextindex = myStakeholderlist.length
 
     var app = new Vue({
         el: '#title',
@@ -158,15 +160,21 @@
         mounted: function () {
             //console.log(this.$refs.canvas)
             //this.context = this.$refs.canvas.getContext('2d')
-            this.paper = new Raphael(this.$refs.canvas, this.w, this.h)
-console.log(this.paper)
+            this.paper = new Raphael(this.$refs.canvas, this.graphwidth+this.graphborder*2, this.graphheight+this.graphborder*2)
+            y = Math.round(this.graphheight)/2
+            x = Math.round(this.graphwidth)/2
+            var keepSatisfied = this.paper.rect(0+this.graphborder, 0+this.graphborder, x, y).attr({stroke: "black"})
+            var manageClosely = this.paper.rect(x+this.graphborder, 0+this.graphborder, x, y).attr({stroke: "black"})
+            var monitor       = this.paper.rect(0+this.graphborder, y+this.graphborder, x, y).attr({stroke: "black"})
+            var keepInformed  = this.paper.rect(x+this.graphborder, y+this.graphborder, x, y).attr({stroke: "black"})
             //draw diagram when page loaded
             this.drawStakeholders()
         },
         data: {
-            w: 400,
-            h: 300,
-            imgData: null,
+            graphwidth: 400,
+            graphheight: 300,
+            graphborder: 5,
+            radius: 4,
             stakeholderlist: myStakeholderlist,
             datasetname: activedataset,
             isDatasetnameDisabled: false
@@ -183,7 +191,7 @@ console.log(this.paper)
         methods: {
             addRow: function () {
                 this.stakeholderlist.push({
-                    id: "",
+                    id:  (new Date()).getTime(), //TODO: better way for unique id
                     name: "",
                     department: "",
                     role: "",
@@ -197,7 +205,8 @@ console.log(this.paper)
             removeRow: function (stakeholder) {
                 var index = this.stakeholderlist.indexOf(stakeholder)
                 this.stakeholderlist.splice(index, 1);
-                this.saveData();
+                this.removePoint(stakeholder)
+                this.saveData()
             },
             saveData: function (event) {
                 localStorage.setItem(this.datasetname, JSON.stringify(this.stakeholderlist))
@@ -212,26 +221,44 @@ console.log(this.paper)
                 //https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/getImageData
                 /*this.clearCanvas()*/
                 for (let stakeholder of this.stakeholderlist) {
+                    this.removePoint(stakeholder)
                     this.drawPoint(stakeholder)
                 }
             },
+            removePoint: function(stakeholder)  {
+                element = this.paper.getById(stakeholder.id)
+                if (element != null) {
+                    element.remove()
+                }
+            },
             drawPoint: function(stakeholder) {
-                let radius = 3
-                let xsep = this.w/6
-                let ysep = this.h/6
+                let xsep = this.graphwidth/6
+                let ysep = this.graphheight/6
                 console.log("try to draw stakeholder '" + stakeholder.name )
                 try {
-                    x = stakeholder.interest*xsep
-                    y = stakeholder.power*ysep
-                    console.log("draw stakeholder '" + stakeholder.name + "' at (" + x + "," + y + ") with r=" + radius)
-                    var circle = this.paper.circle(x,y,radius)
-                    circle.attr({fill: stakeholder.color });
+                    x = stakeholder.interest*xsep+this.graphborder
+                    y = stakeholder.power*ysep+this.graphborder
+                    console.log("draw stakeholder #'"+ stakeholder.id + " " + stakeholder.name + "' at (" + x + "," + y + ") with r=" + this.radius)
+                    var circle = this.paper.circle(x,y,this.radius)
+                        .attr({fill: stakeholder.color})
+                        .mouseover(this.showText)
+                        .click(this.showText);
+                    circle.id = stakeholder.id
+                    circle.nodeName = stakeholder.name
+                    console.log(circle)
                 } catch (e) {
-                    console.log("Unable to draw " + stakeholder.name)
+                    console.log(e)
                 }
             },
             clearCanvas: function() {
                 this.context.clearRect(0, 0, this.w, this.h)
+            },
+            showText: function(event) {
+                //element.text(element.)
+                var name = event.target.nodeName
+                var id = event.target.id
+                console.log(id)
+                //console.log(event)
             }
         }
     })
