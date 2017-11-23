@@ -27,12 +27,12 @@ td {
     background-color: orange;
 }
 .red {
-    background-color: red;
+    background-color: lightcoral;
 }
 
 .error {
     color: red;
-    border: 2px red solid;
+    background-color: lightcoral;
 }
 
 .tooltip {
@@ -41,21 +41,34 @@ td {
 }
 
 /* Tooltip text */
-.tooltip .tooltiptext {
+.tooltip .tooltiptext, .tooltiptexterr  {
     visibility: hidden;
-    background-color:red;
-    color: black;
+    background-color:black;
+    color: grey;
     font-size: 10px;
     text-align: center;
     padding: 4px;
     border-radius: 2px;
     cursor: pointer;
-
     position: absolute;
     z-index: 1;
 }
 
+.tooltiptexterr {
+    background-color: lightcoral;
+    color: black;
+}
+
 /* Show the tooltip text when you mouse over the tooltip container */
-.tooltip:hover .tooltiptext {
+.tooltip:hover .tooltiptext, .tooltip:hover .tooltiptexterr {
     visibility: visible;
+}
+
+.axis {
+    stroke: black;
+    stroke-width: 3px;
+}
+
+.stakeholdergraph {
+    border: solid 1px black;
 }
