@@ -34,9 +34,12 @@
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="stakeholder in stakeholderlist" v-bind:class="stakeholder.color" v-on:onload="drawStakeholders">
+                <tr v-for="stakeholder in stakeholderlist" 
+                    v-bind:class="stakeholder.color" 
+                    v-on:onload="drawStakeholders"
+                    >
                     <td>
-                        <span v-model="stakeholder.index">{{ stakeholder.index }}</span>
+                        <span>{{ stakeholder.index }}</span>
                     </td>
                     <td>
                         <div class="tooltip">
@@ -45,7 +48,7 @@
                                 title="Stakeholder name"
                                 placeholder="stakeholder name" 
                                 v-bind:class="{ error: stakeholder.name == '' }"
-                                v-on:change="saveData"> 
+                                > 
                             <span class="tooltiptexterr" v-show="!stakeholder.name" >stakeholder name is missing</span>
                         </div>
                     </td>
@@ -54,7 +57,7 @@
                         <input type="text" 
                             v-model="stakeholder.department" 
                             placeholder="department" 
-                            v-on:change="saveData">
+                            >
                             <span class="tooltiptext" v-show="!stakeholder.department" >provide department</span>
                         </div>
                     </td>
@@ -63,7 +66,7 @@
                         <input type="text" 
                             v-model="stakeholder.role" 
                             placeholder="role" 
-                            v-on:change="saveData">
+                            >
                             <span class="tooltiptext" v-show="!stakeholder.role" >provide role </span>
                         </div>
                     </td>
@@ -72,7 +75,7 @@
                         <input type="text" 
                             v-model="stakeholder.comment" 
                             placeholder="comment" 
-                            v-on:change="saveData">
+                            >
                             <span class="tooltiptext" v-show="!stakeholder.comment" >proivde comment</span>
                         </div>
                     </td>
@@ -80,7 +83,7 @@
                         <div class="tooltip">
                         <select v-model="stakeholder.power"
                             v-bind:class="{ error: stakeholder.power == '' }"
-                            v-on:change="saveData">
+                            >
                             <option disabled value="">power</option>
                             <option value="6">very low</option>
                             <option value="5">low</option>
@@ -98,7 +101,7 @@
                         <div class="tooltip">
                         <select v-model="stakeholder.interest"
                             v-bind:class="{ error: stakeholder.interest == '' }"
-                            v-on:change="saveData">
+                            >
                             <option disabled value="">interest</option>
                             <option value="0">very low</option>
                             <option value="1">low</option>
@@ -116,7 +119,7 @@
                         <div class="tooltip">
                         <select v-model="stakeholder.color"
                             v-bind:class="{ error: stakeholder.color == '' }"
-                            v-on:change="saveData">
+                            >
                             <option disabled value="">color</option>
                             <option>green</option>
                             <option>orange</option>
@@ -160,13 +163,14 @@
         mounted: function () {
             //console.log(this.$refs.canvas)
             //this.context = this.$refs.canvas.getContext('2d')
-            this.paper = new Raphael(this.$refs.canvas, this.graphwidth+this.graphborder*2, this.graphheight+this.graphborder*2)
-            y = Math.round(this.graphheight)/2
-            x = Math.round(this.graphwidth)/2
-            var keepSatisfied = this.paper.rect(0+this.graphborder, 0+this.graphborder, x, y).attr({stroke: "black"})
-            var manageClosely = this.paper.rect(x+this.graphborder, 0+this.graphborder, x, y).attr({stroke: "black"})
-            var monitor       = this.paper.rect(0+this.graphborder, y+this.graphborder, x, y).attr({stroke: "black"})
-            var keepInformed  = this.paper.rect(x+this.graphborder, y+this.graphborder, x, y).attr({stroke: "black"})
+            this.paper = new Raphael(this.$refs.canvas, this.graphwidth + this.graphborder * 2, this.graphheight + this.graphborder * 2)
+            var grid = this.paper.set();
+            grid.push (
+                this.paper.rect(0 + this.graphborder,         0+this.graphborder,           this.xmed, this.ymed).attr({stroke: "black"}),
+                this.paper.rect(this.xmed + this.graphborder, 0+this.graphborder,           this.xmed, this.ymed).attr({stroke: "black"}),
+                this.paper.rect(0 + this.graphborder,         this.ymed + this.graphborder, this.xmed, this.ymed).attr({stroke: "black"}),
+                this.paper.rect(this.xmed + this.graphborder, this.ymed + this.graphborder, this.xmed, this.ymed).attr({stroke: "black"})
+            )
             //draw diagram when page loaded
             this.drawStakeholders()
         },
@@ -181,11 +185,31 @@
         },
         watch: {
             datasetname: function(value) {
-                console.log("WATCH datasetname " + value)
                 this.datasetname = "noname"
             },
-            stakeholderlist: function(value) {
-                console.log("WATCH stakeholder " + value)
+            stakeholderlist: {
+                handler: function(newVal, oldVal) {
+                    console.log(newVal)
+                    let changedIndex;
+                    newVal.forEach((stakeholder, idx) => {
+                        console.log(stakeholder.name + " ? " + oldVal[idx].name)
+                        if (stakeholder.name !== oldVal[idx].name) {
+                            console.log("MATCH")
+                            changedIndex = idx;
+                        }
+                    })
+                    console.log(changedIndex);
+                    this.saveData()
+                }, 
+                deep: true
+            }
+        },
+        computed: {
+            ymed: function() {
+                return Math.round(this.graphheight)/2
+            },
+            xmed: function() {
+                return Math.round(this.graphwidth)/2
             }
         },
         methods: {
@@ -210,16 +234,9 @@
             },
             saveData: function (event) {
                 localStorage.setItem(this.datasetname, JSON.stringify(this.stakeholderlist))
-                console.log("saveData " + event)
                 this.drawStakeholders()
             },
             drawStakeholders: function () {
-                console.log("drawStakeholders()")
-                //var circle = this.paper.circle(100, 100, 80);
-                //var rectangle = this.paper.rect(200, 200, 250, 50);
-                //https://github.com/stefanonepa/vue-draw-canvas/
-                //https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/getImageData
-                /*this.clearCanvas()*/
                 for (let stakeholder of this.stakeholderlist) {
                     this.removePoint(stakeholder)
                     this.drawPoint(stakeholder)
@@ -234,18 +251,19 @@
             drawPoint: function(stakeholder) {
                 let xsep = this.graphwidth/6
                 let ysep = this.graphheight/6
-                console.log("try to draw stakeholder '" + stakeholder.name )
                 try {
                     x = stakeholder.interest*xsep+this.graphborder
                     y = stakeholder.power*ysep+this.graphborder
-                    console.log("draw stakeholder #'"+ stakeholder.id + " " + stakeholder.name + "' at (" + x + "," + y + ") with r=" + this.radius)
+                    console.log("draw #"+ stakeholder.id + " " + stakeholder.name + " at (" + x + "," + y + ") with r=" + this.radius)
                     var circle = this.paper.circle(x,y,this.radius)
                         .attr({fill: stakeholder.color})
                         .mouseover(this.showText)
-                        .click(this.showText);
+                        .mouseout(this.hideText)
+                        .click(this.putBehind);
                     circle.id = stakeholder.id
                     circle.nodeName = stakeholder.name
-                    console.log(circle)
+                    circle.node.id = stakeholder.id
+                    circle.node.nodeName = stakeholder.name
                 } catch (e) {
                     console.log(e)
                 }
@@ -254,11 +272,29 @@
                 this.context.clearRect(0, 0, this.w, this.h)
             },
             showText: function(event) {
-                //element.text(element.)
-                var name = event.target.nodeName
-                var id = event.target.id
-                console.log(id)
-                //console.log(event)
+                //calculate offset so tat text is also shown on the edges
+                x = event.target.cx.baseVal.value
+                y = event.target.cy.baseVal.value
+                xoffset = x >= this.xmed ? -20 : 20
+                yoffset = y >= this.ymed ? -10 : 10
+                
+                stakeholder = this.stakeholderlist.find(stakeholder => stakeholder.id == event.target.id)
+                var tooltip = this.paper.text(
+                    x + xoffset,
+                    y + yoffset, 
+                    stakeholder.name).attr({ "font-size": 16})
+                tooltip.id = "tp" + stakeholder.id
+            },
+            hideText: function(event) {
+                this.paper.getById("tp" + event.target.id).remove()
+            },
+            putBehind: function(event) {
+                this.paper.getById(event.target.id).toBack()
+                //following currently does not work which leaves some points behinde the grid line (looks ugly)
+                //this.grid.toBack()
+                //TODO: create issue
+                //According to the documentation of http://dmitrybaranovskiy.github.io/raphael/reference.html#Paper.set 
+                //> Sets act as pseudo elements — all *methods available* to an element can be used on a set
             }
         }
     })
