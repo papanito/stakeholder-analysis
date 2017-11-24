@@ -6,45 +6,6 @@ A webapp which helps me to do stakeholder analyzis i.e. graphical representation
 
 Inspired by [this post](https://medium.com/unicorn-supplies/angular-vs-react-vs-vue-a-2017-comparison-c5c52d620176) I decided to use [Vue](https://vuejs.org/). I have no experience at all with JavaScript Frameworks, so I guess this will be an interesting Journey.
 
-## First steps
-
-Before starting we need to install Vue
-
-* [Include vue.js](https://vuejs.org/v2/guide/#Getting-Started)
-* [Install DevTools](https://github.com/vuejs/vue-devtools#vue-devtools)
-
-As I uses VS Code I also recomment these extensions
-
-* [Vue Syntax Highlighting](https://marketplace.visualstudio.com/items?itemName=liuji-jim.vue)
-* [Vue Development Extension Pack](https://marketplace.visualstudio.com/items?itemName=changjoo-park.vscode-vue-devpack)
-
-## Testing
-
-There is a specific page for unit testing at <https://vuejs.org/v2/guide/unit-testing.html> with specific recommendation to use [Karma](http://karma-runner.github.io/) Test runner.
-
-## Simple vue example
-
-```html
-<html>
-    <head>
-          <script src="https://unpkg.com/vue"></script>
-    </head>
-    <body>
-        <div id="app">
-            {{ message }}
-        </div>
-        <script>
-            var app = new Vue({
-                el: '#app',
-                data: {
-                    message: 'Hello Vue!'
-                }
-            })
-        </script>
-    </body>
-</html>
-```
-
 ## Stakeholder Analysis
 
 Checkout <https://www.mindtools.com/pages/article/newPPM_07.htm> for details. Below a summary of the important key elements
@@ -80,3 +41,59 @@ You can summarize the understanding you have gained on the stakeholder map, so t
 * green: advocates and supporters
 * orange: neutral
 * red: blockers and critics
+
+## First steps
+
+As a simple start I choose to create an index.html page with vue.js as js framework. So we don't need to install anything expect the DevTools
+
+* [Install DevTools](https://github.com/vuejs/vue-devtools#vue-devtools)
+
+As I uses VS Code I also recomment these extensions
+
+* [Vue Syntax Highlighting](https://marketplace.visualstudio.com/items?itemName=liuji-jim.vue)
+* [Vue Development Extension Pack](https://marketplace.visualstudio.com/items?itemName=changjoo-park.vscode-vue-devpack)
+
+Beside of that, it's only required to include the vue.js script in the html page:
+
+* [Include vue.js](https://vuejs.org/v2/guide/#Getting-Started)
+
+So here a simple vue.js example:
+
+```html
+<html>
+    <head>
+          <script src="https://unpkg.com/vue"></script>
+    </head>
+    <body>
+        <div id="app">
+            {{ message }}
+        </div>
+        <script>
+            var app = new Vue({
+                el: '#app',
+                data: {
+                    message: 'Hello Vue!'
+                }
+            })
+        </script>
+    </body>
+</html>
+```
+
+## Testing
+
+There is a specific page for unit testing at <https://vuejs.org/v2/guide/unit-testing.html> with specific recommendation to use [Karma](http://karma-runner.github.io/) Test runner. Details will be elaborated later
+
+  Karma is not a testing framework, nor an assertion library. Karma just launches an HTTP server, and generates the test runner HTML file 
+
+## Development Notes
+
+collection of note, will be strctured later
+
+### Tooltips
+Todo: 
+- At its core, webpack is a static module bundler for modern JavaScript applications. When webpack processes your application, it recursively builds a dependency graph that includes every module your application needs, then packages all of those modules into one or more bundles.
+- http://browserify.org/#install: Browsers don't have the require method defined, but Node.js does. With Browserify you can write code that uses require in the same way that you would use it in Node.
+- https://www.safaribooksonline.com/blog/2012/04/06/node-js-tip-why-isnt-this-module-loading/
+
+
